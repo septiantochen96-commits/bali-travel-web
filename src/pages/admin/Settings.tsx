@@ -17,16 +17,20 @@ export default function Settings() {
   useEffect(() => { loadExtra() }, [])
 
   const load = async () => {
-    const { data } = await supabase.from('site_settings').select('*').limit(1)
-    if (data && data.length > 0) {
-      setWhatsapp(data[0].whatsapp_number || '')
-      setMessage(data[0].booking_message || 'Hello, can I get more detail about this package?')
-      setEmail(data[0].email_address || '')
-      setFacebook(data[0].social_facebook_url || '')
-      setInstagram(data[0].social_instagram_url || '')
-      setTiktok(data[0].social_tiktok_url || '')
-      setAddress(data[0].physical_address || '')
-      if (data[0].copyright_year) setCopyrightYear(String(data[0].copyright_year))
+    const { data } = await supabase
+      .from('site_settings')
+      .select('*')
+      .eq('id', 1)
+      .maybeSingle()
+    if (data) {
+      setWhatsapp(data.whatsapp_number || '')
+      setMessage(data.booking_message || 'Hello, can I get more detail about this package?')
+      setEmail(data.email_address || '')
+      setFacebook(data.social_facebook_url || '')
+      setInstagram(data.social_instagram_url || '')
+      setTiktok(data.social_tiktok_url || '')
+      setAddress(data.physical_address || '')
+      if (data.copyright_year) setCopyrightYear(String(data.copyright_year))
     }
   }
 
@@ -47,34 +51,23 @@ export default function Settings() {
     e.preventDefault()
     setSaving(true)
     try {
-      const { data } = await supabase.from('site_settings').select('id').limit(1)
-      if (data && data.length > 0) {
-        const id = data[0].id
-        const { error } = await supabase.from('site_settings').update({
-          whatsapp_number: whatsapp,
-          booking_message: message,
-          email_address: email,
-          social_facebook_url: facebook,
-          social_instagram_url: instagram,
-          social_tiktok_url: tiktok,
-          physical_address: address,
-          copyright_year: parseInt(copyrightYear || String(new Date().getFullYear()), 10),
-          updated_at: new Date().toISOString()
-        }).eq('id', id)
-        if (error) throw error
-      } else {
-        const { error } = await supabase.from('site_settings').insert({
-          whatsapp_number: whatsapp,
-          booking_message: message,
-          email_address: email,
-          social_facebook_url: facebook,
-          social_instagram_url: instagram,
-          social_tiktok_url: tiktok,
-          physical_address: address,
-          copyright_year: parseInt(copyrightYear || String(new Date().getFullYear()), 10)
-        })
-        if (error) throw error
-      }
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert([
+          {
+            id: 1,
+            whatsapp_number: whatsapp,
+            booking_message: message,
+            email_address: email,
+            social_facebook_url: facebook,
+            social_instagram_url: instagram,
+            social_tiktok_url: tiktok,
+            physical_address: address,
+            copyright_year: parseInt(copyrightYear || String(new Date().getFullYear()), 10),
+            updated_at: new Date().toISOString(),
+          },
+        ], { onConflict: 'id' })
+      if (error) throw error
       try {
         await fetch('http://localhost:3001/api/storage/ensure-branding-bucket', { method: 'POST' })
         await fetch('http://localhost:3001/api/settings/site-config', {
