@@ -1,0 +1,2 @@
+ALTER TABLE public.tours
+  ADD COLUMN IF NOT EXISTS category_priority INTEGER DEFAULT 0;
