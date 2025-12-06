@@ -171,9 +171,8 @@ export default function Home() {
               Explore Tours
             </button>
             <a
-              href={waNumber ? `https://wa.me/${waNumber}` : 'https://wa.me/6281234567890'}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
+              onClick={(e) => { e.preventDefault(); openWhatsApp('Hello, can I get more detail about this package?', waNumber || '6281234567890') }}
               className="btn-primary text-base md:text-lg px-6 py-3 flex items-center justify-center space-x-2 mx-auto"
             >
               <Phone className="h-5 w-5" />

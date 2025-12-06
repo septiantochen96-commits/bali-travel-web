@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchSiteSettings } from '../lib/settings'
 import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
+import { openWhatsApp } from '../lib/utils'
 
 export default function Footer() {
   const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
@@ -35,7 +36,7 @@ export default function Footer() {
     })()
   }, [])
 
-  const waHref = wa && wa.trim() ? `https://wa.me/${wa.trim()}` : undefined
+  const waHref = wa && wa.trim() ? `whatsapp://send?phone=${wa.trim()}` : undefined
   const emailHref = email && email.trim() ? `mailto:${email.trim()}` : undefined
 
   return (
@@ -45,7 +46,12 @@ export default function Footer() {
           <h3 className="text-lg font-serif font-semibold mb-3">Contact</h3>
           <ul className="space-y-2 text-sm">
             {waHref && (
-              <li className="flex items-center space-x-2"><Phone className="h-4 w-4" /><a href={waHref} target="_blank" rel="noopener noreferrer">WhatsApp: {wa}</a></li>
+              <li className="flex items-center space-x-2">
+                <Phone className="h-4 w-4" />
+                <a href="#" onClick={(e) => { e.preventDefault(); openWhatsApp('Hello, I would like to get in touch', wa) }}>
+                  WhatsApp: {wa}
+                </a>
+              </li>
             )}
             {emailHref && (
               <li className="flex items-center space-x-2"><Mail className="h-4 w-4" /><a href={emailHref}>{email}</a></li>

@@ -20,7 +20,18 @@ export function generateWhatsAppMessage(tourTitle: string): string {
 
 export function openWhatsApp(message: string, phoneNumber?: string): void {
   const encodedMessage = encodeURIComponent(message)
-  const target = phoneNumber && phoneNumber.trim() ? `/${phoneNumber.trim()}` : ''
-  const whatsappUrl = `https://wa.me${target}?text=${encodedMessage}`
-  window.open(whatsappUrl, '_blank')
+  const phone = phoneNumber && phoneNumber.trim() ? phoneNumber.trim() : ''
+  const schemeUrl = phone
+    ? `whatsapp://send?phone=${phone}&text=${encodedMessage}`
+    : `whatsapp://send?text=${encodedMessage}`
+  const webUrl = phone
+    ? `https://wa.me/${phone}?text=${encodedMessage}`
+    : `https://wa.me/?text=${encodedMessage}`
+  const start = Date.now()
+  window.location.href = schemeUrl
+  setTimeout(() => {
+    if (Date.now() - start < 1500) {
+      window.location.href = webUrl
+    }
+  }, 1200)
 }
