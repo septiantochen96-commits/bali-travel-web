@@ -13,11 +13,15 @@ export default function BrandingForm() {
   useEffect(() => { ensureBucket().then(loadSettings) }, [])
 
   const loadSettings = async () => {
-    const { data } = await supabase.from('site_settings').select('*').limit(1)
-    if (data && data.length > 0) {
-      setBrandName(data[0].brand_name || 'BALI VOYAGER CO')
-      setLogoUrl(data[0].logo_url || '')
-      setHeroBgUrl(data[0].hero_bg_url || '')
+    const { data } = await supabase
+      .from('site_settings')
+      .select('*')
+      .eq('id', 1)
+      .maybeSingle()
+    if (data) {
+      setBrandName(data.brand_name || 'BALI VOYAGER CO')
+      setLogoUrl(data.logo_url || '')
+      setHeroBgUrl(data.hero_bg_url || '')
     }
   }
 
@@ -88,15 +92,18 @@ export default function BrandingForm() {
     e.preventDefault()
     setSaving(true)
     try {
-      const { data } = await supabase.from('site_settings').select('id').limit(1)
-      if (data && data.length > 0) {
-        const id = data[0].id
-        const { error } = await supabase.from('site_settings').update({ brand_name: brandName, logo_url: logoUrl, hero_bg_url: heroBgUrl, updated_at: new Date().toISOString() }).eq('id', id)
-        if (error) throw error
-      } else {
-        const { error } = await supabase.from('site_settings').insert({ brand_name: brandName, logo_url: logoUrl, hero_bg_url: heroBgUrl })
-        if (error) throw error
-      }
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert([
+          {
+            id: 1,
+            brand_name: brandName,
+            logo_url: logoUrl,
+            hero_bg_url: heroBgUrl,
+            updated_at: new Date().toISOString(),
+          },
+        ], { onConflict: 'id' })
+      if (error) throw error
       alert('Brand settings saved')
     } catch (e) {
       console.error('Error saving brand settings', e)

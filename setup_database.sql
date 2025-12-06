@@ -12,7 +12,7 @@ create table public.site_settings (
   social_instagram_url text,
   social_tiktok_url text,
   physical_address text,
-  copyright_year integer,
+  copyright_year text,
   inserted_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -42,7 +42,7 @@ insert into public.site_settings (
   'https://instagram.com/bali',
   'https://www.tiktok.com/@balivoy',
   'Jln mertasari indah no 140',
-  2023
+  '2023'
 )
 on conflict (id) do update set
   brand_name = excluded.brand_name,
