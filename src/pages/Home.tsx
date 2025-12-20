@@ -5,6 +5,7 @@ import { TOUR_CATEGORIES, fetchOnedaySubcategories, DEFAULT_ONEDAY_SUBCATEGORIES
 import { MapPin, Clock, DollarSign, Phone, Star, Users, Calendar } from 'lucide-react'
 import { fetchSiteSettings } from '../lib/settings'
 import { openWhatsApp } from '../lib/utils'
+import SEO from '../components/SEO'
 
 export default function Home() {
   const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
@@ -149,7 +150,13 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
+      <SEO 
+        title="Bali Voyager Co - Luxury Travel & Tours in Bali"
+        description="Experience the best of Bali with our premium tour packages, private car rentals, and personalized services. Book your dream vacation today."
+        image={heroBgUrl || undefined}
+      />
+      
       {/* Hero Section */}
       <section className={`relative h-screen ${heroBgUrl ? 'bg-cover bg-center' : 'bg-gradient-to-br from-emerald-900 via-emerald-700 to-gold-600'} flex items-center justify-center text-white`} style={heroBgUrl ? { backgroundImage: `url(${heroBgUrl})` } : undefined}>
         <div className="absolute inset-0 bg-black opacity-30 pointer-events-none"></div>

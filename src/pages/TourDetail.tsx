@@ -4,6 +4,7 @@ import { supabase, Tour, TourGallery, TourPrice, TourInclusion } from '../lib/su
 import { generateWhatsAppMessage, openWhatsApp } from '../lib/utils'
 import { fetchSiteSettings } from '../lib/settings'
 import { MapPin, Clock, Phone, Star, Check, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import SEO from '../components/SEO'
 
 export default function TourDetail() {
   const { slug } = useParams()

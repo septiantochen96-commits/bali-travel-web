@@ -49,6 +49,11 @@ export default function CarRental() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title="Bali Car Rental with Driver - Bali Voyager Co"
+        description="Reliable and comfortable car rental services with professional drivers in Bali. Explore the island at your own pace."
+        url="/car-rental"
+      />
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-serif font-bold text-emerald-800 text-center mb-8">Best Car Rental with Driver in Bali</h1>

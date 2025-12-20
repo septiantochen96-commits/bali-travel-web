@@ -32,6 +32,11 @@ export default function AirportTransfer() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title="Bali Airport Transfer Prices - Bali Voyager Co"
+        description="Check our competitive rates for airport transfers in Bali. SUV, Elf, and Bus options available for all destinations."
+        url="/airport-transfer"
+      />
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-serif font-bold text-emerald-800 text-center mb-8">Airport Transfer Prices</h1>
